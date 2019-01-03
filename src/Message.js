@@ -9,16 +9,22 @@ class Message extends Component{
       showBody: null,
       star: props.starred ? 'star fa fa-star-o' :  'star fa fa-star',
       labelList: props.labels.map(lab => <span key={lab} className="label label-warning">{lab}</span>),
-      checkboxCheck: props.selected ? 'checked' : ''
+      checkboxCheck: '',
+      read: this.props.read ? 'read ' : 'unread ',
+      selected: ''
     }
   }
 
-  rowMess = (r, s) => {
-    let res = 'row message '
-    if(r === true) {res+= 'read '}
-    else {res+= 'unread '}
-    if(s === true) {res += 'selected '}
-    return res
+  readUnread = () => {
+    if(this.props.read === false){
+      axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'read'})
+      .then(()=>{
+        this.seeBody()
+      })
+    }
+    else {
+      this.seeBody()
+    }
   }
 
   seeBody = () => {
@@ -31,31 +37,19 @@ class Message extends Component{
                     <div className="col-xs-11 col-xs-offset-1">
                       {this.props.body}
                      </div>
-                    </div>
-        
-      })
+                    </div>,
+                    
+        read:'read '})
     }
   }
 
-  //include async calls to the server to change the state shown
-  // http PATCH :8082/api/messages messageIds:='[8]' command=star
   checkChange = () => {
     if(this.state.checkboxCheck === ''){
-      this.setState({checkboxCheck: 'checked'})
+      this.setState({checkboxCheck: 'checked', selected: 'selected'})
     }
     else{
-      this.setState({checkboxCheck: ''})
+      this.setState({checkboxCheck: '', selected: ''})
     }
-
-    // axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'select??????'})
-    // .then(() => {
-    // if(this.state.checkboxCheck === ''){
-    //   this.setState({checkboxCheck: 'checked'})
-    // }
-    // else{
-    //   this.setState({checkboxCheck: ''})
-    // }
-    // })
   }
 
   starChange = () => {
@@ -76,7 +70,7 @@ class Message extends Component{
   render(){
     return(
       <div>
-      <div className={this.rowMess(this.props.read, this.props.selected)}>
+      <div className={"row message " + this.state.read + this.state.selected}>
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
@@ -87,7 +81,7 @@ class Message extends Component{
           </div>
         </div>
       </div>
-      <div className='col-xs-11' onClick={this.seeBody}>
+      <div className='col-xs-11' onClick={this.readUnread}>
        {this.state.labelList}
        <a href="#">{this.props.subject}</a>
       </div>
