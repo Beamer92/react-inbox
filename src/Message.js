@@ -1,95 +1,127 @@
-import React, {Component} from 'react'
-import axios from 'axios'
+import React from 'react'
 
-class Message extends Component{
-  constructor(props){
-    super(props)
 
-    this.state={
-      showBody: null,
-      star: props.starred ? 'star fa fa-star-o' :  'star fa fa-star',
-      labelList: props.labels.map(lab => <span key={lab} className="label label-warning">{lab}</span>),
-      checkboxCheck: '',
-      read: this.props.read ? 'read ' : 'unread ',
-      selected: ''
-    }
-  }
+function Message(props){
+  // constructor(props){
+  //   super(props)
 
-  readUnread = () => {
-    if(this.props.read === false){
-      axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'read'})
-      .then(()=>{
-        this.seeBody()
-      })
-    }
-    else {
-      this.seeBody()
-    }
-  }
+  //   this.state={
+  //     showBody: null,
+  //     star: props.starred ? 'star fa fa-star-o' :  'star fa fa-star',
+  //     labelList: props.labels.map(lab => <span key={lab} className="label label-warning">{lab}</span>),
+  //     read: this.props.read ? 'read ' : 'unread ',
+  //     checked: false,
+  //     selected: false
+  //   }
+  // }
 
-  seeBody = () => {
-    if(this.state.showBody){
-      this.setState({showBody: null})
-    }
-    else{
-      this.setState({
-        showBody: <div className="row message-body">
-                    <div className="col-xs-11 col-xs-offset-1">
-                      {this.props.body}
-                     </div>
-                    </div>,
+  // readUnread = () => {state
+  //   if(this.props.read === false){
+  //     axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'read'})
+  //     .then(()=>{
+  //       this.seeBody()
+  //     })
+  //   }
+  //   else {
+  //     this.seeBody()
+  //   }
+  // }
+  
+  // seeBody = () => {
+  //   if(this.state.showBody){
+  //     this.setState({showBody: null})
+  //   }
+  //   else{
+  //     this.setState({
+  //       showBody: <div className="row message-body">
+  //                   <div className="col-xs-11 col-xs-offset-1">
+  //                     {this.props.body}
+  //                    </div>
+  //                   </div>,
                     
-        read:'read '})
-    }
-  }
+  //       read:'read '})state
+  //   }
+  // }
 
-  checkChange = () => {
-    if(this.state.checkboxCheck === ''){
-      this.setState({checkboxCheck: 'checked', selected: 'selected'})
-    }
-    else{
-      this.setState({checkboxCheck: '', selected: ''})
-    }
-  }
+  // checkChange = () => {
+  //     if(this.props.allSelected === 2){
+  //       this.props.partialSelect()
+  //     }
 
-  starChange = () => {
-    axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'star'})
-    .then(()=>{
-      if(this.state.star === 'star fa fa-star-o'){
-        this.setState({star: 'star fa fa-star'})
-      }
-      else {
-        this.setState({star: 'star fa fa-star-o'})
-      }
-    })
-    .catch(error=> {
-      console.log(error)
-    })
-  }
+  //     if(this.state.checked === false) {
+  //       this.setState({
+  //         checked:true,
+  //         selected: true
+  //       })
+  //     }
+  //     else {
+  //       this.setState({
+  //         checked:false,
+  //         selected:false
+  //       })
+  //     }
+  // }
 
-  render(){
+  // checked = () => {
+  //     if(this.props.allSelected === 2) {
+  //       return 'checked'
+  //     }
+  //     else if(this.state.checked === true){
+  //       return 'checked'
+  //     }
+  //     else{
+  //       return ''
+  //     }
+  // }
+
+  // selected = () => {
+  //   if(this.props.allSelected === 2) {
+  //     return 'selected'
+  //   }
+  //   else if(this.state.selected === true){
+  //     return 'selected'
+  //   }
+  //   else{
+  //     return ''
+  //   }
+  // }
+
+  // starChange = () => {
+  //   axios.patch('http://localhost:8082/api/messages',{ messageIds:[this.props.id], command:'star'})
+  //   .then(()=>{
+  //     if(this.state.star === 'star fa fa-star-o'){
+  //       this.setState({star: 'star fa fa-star'})
+  //     }
+  //     else {
+  //       this.setState({star: 'star fa fa-star-o'})
+  //     }
+  //   })
+  //   .catch(error=> {
+  //     console.log(error)
+  //   })
+  // }
+
     return(
       <div>
-      <div className={"row message " + this.state.read + this.state.selected}>
+      <div className={"row message " + this.props.read + this.props.selected}>
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
-            <input type="checkbox" checked={this.state.checkboxCheck} onChange={this.checkChange}/>
+            <input type="checkbox" checked='{***}' onChange='{***}'/>
           </div>
           <div className="col-xs-2">
-            <i className={this.state.star} onClick={this.starChange}></i>
+            <i className={this.props.star} onClick={this.props.starChange}></i>
           </div>
         </div>
       </div>
-      <div className='col-xs-11' onClick={this.readUnread}>
-       {this.state.labelList}
+      <div className='col-xs-11' onClick={this.props.readUnread}>
+       {this.props.labelList}
        <a href="#">{this.props.subject}</a>
       </div>
     </div>
-      {this.state.showBody}
+      {this.props.showBody}
     </div>
   )
-  }
 }
 
 export default Message

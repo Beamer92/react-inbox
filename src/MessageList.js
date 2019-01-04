@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Message from './Message'
+import Toolbar from './Toolbar'
 import axios from 'axios'
 
 class MessageList extends Component{
@@ -12,9 +13,9 @@ class MessageList extends Component{
         "id": 0,
         "labels": [],
         "read": false,
-        "selected": false,
         "starred": false,
-        "subject": "SUBJECT HERE"}]
+        "subject": "SUBJECT HERE"}],
+      selected: new Set()
     }
   }
 
@@ -33,11 +34,33 @@ class MessageList extends Component{
     }
   }
 
+
+  //handletoggleselected = (id) => {
+/* const newSet = new Set(Array.from(this.state.selected))
+  if(newSet.has(id)){
+    newSet.delete(id)
+  }  
+  else ....
+
+  this.setState({
+    selected: newSet
+  })
+ */
+  // }
+
+//put Toolbar here also
+//send all message stuff as props with work done here
+
   render(){
    return(
       <div className='container'>
+       <Toolbar />
       {this.state.messages.map(message => {
-        return <Message key={message.id} {...message}/>
+        return <Message key={message.id} 
+          
+        
+        
+        />
       })}
     </div>
    )

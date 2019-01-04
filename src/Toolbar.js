@@ -1,14 +1,31 @@
 import React, {Component} from 'react'
 
 class Toolbar extends Component{
-  constructor(props){
-    super(props)
+  // constructor(props){
+  //   super(props)
 
-    this.state = {
-      selection: 'none'
+  // }
+  
+ selections = () => {
+    if(this.props.allSelected === 0){
+      return "fa fa-square-o"
+    }
+    else if(this.props.allSelected === 1){
+      return "fa fa-minus-square-o"
+    }
+    else {
+      return "fa fa-check-square-o"
     }
   }
 
+  dis = () => {
+    if(this.props.allSelected === 0){
+      return 'disabled'
+    }
+    else{ 
+      return ''
+    }
+  }
 
   render(){
     return(
@@ -19,33 +36,33 @@ class Toolbar extends Component{
             unread messages
           </p>
 
-          <button className="btn btn-default">
-            <i className="fa fa-square-o"></i>
+          <button className="btn btn-default" onClick={this.props.selectAll}>
+            <i className={this.selections()}></i>
           </button>
 
-          <button className="btn btn-default" disabled="disabled">
+          <button className="btn btn-default" disabled={this.dis()}>
             Mark As Read
           </button>
 
-          <button className="btn btn-default" disabled="disabled">
+          <button className="btn btn-default" disabled={this.dis()}>
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled="disabled">
+          <select className="form-control label-select" disabled={this.dis()}>
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select className="form-control label-select" disabled="disabled">
+          <select className="form-control label-select" disabled={this.dis()}>
             <option>Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default" disabled="disabled">
+          <button className="btn btn-default" disabled={this.dis()}>
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
