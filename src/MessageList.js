@@ -48,18 +48,81 @@ class MessageList extends Component{
  */
   // }
 
-//put Toolbar here also
-//send all message stuff as props with work done here
+  readUnread = async(id) => {
+    try{ 
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:[id], command:'read'})
+      //now show the clicked upon message??
+    } catch(err) {
+      console.log(err)
+    }
+  }
 
+  starChange = async(id) => {
+    try{
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:[id], command:'star'})
+      this.getMessages()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  // checkChange = () => {
+  //     if(this.props.allSelected === 2){
+  //       this.props.partialSelect()
+  //     }
+
+  //     if(this.state.checked === false) {
+  //       this.setState({
+  //         checked:true,
+  //         selected: true
+  //       })
+  //     }
+  //     else {
+  //       this.setState({
+  //         checked:false,
+  //         selected:false
+  //       })
+  //     }
+  // }
+
+    // checked = () => {
+  //     if(this.props.allSelected === 2) {
+  //       return 'checked'
+  //     }
+  //     else if(this.state.checked === true){
+  //       return 'checked'
+  //     }
+  //     else{
+  //       return ''
+  //     }
+  // }
+
+  // selected = () => {
+  //   if(this.props.allSelected === 2) {
+  //     return 'selected'
+  //   }
+  //   else if(this.state.selected === true){
+  //     return 'selected'
+  //   }
+  //   else{
+  //     return ''
+  //   }
+  // }
+ 
   render(){
    return(
       <div className='container'>
        <Toolbar />
       {this.state.messages.map(message => {
         return <Message key={message.id} 
-          
-        
-        
+          star={message.starred ? 'star fa fa-star-o' :  'star fa fa-star'}
+          starChange={() => this.starChange(message.id)}
+          labelList={message.labels.map(lab => <span key={lab} className="label label-warning">{lab}</span>)}
+          read={message.read ? 'read ' : 'unread '}
+          readUnread={()=> {this.readUnread(message.id)}}
+          body={message.body}
+          subject={message.subject}
+          // selected={}
         />
       })}
     </div>
