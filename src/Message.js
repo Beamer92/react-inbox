@@ -6,7 +6,7 @@ function Message(props){
 
     return(
       <div>
-      <div className={"row message " + props.read + props.selected}>
+      <div className={"row message " +  (props.read ? 'read ' : 'unread ') + props.selected}>
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
@@ -23,7 +23,7 @@ function Message(props){
        <a href="#">{props.subject}</a>
       </div>
     </div>
-      {/*body goes here when shown*/}
+      {props.reading ? <div className="row message-body"><div className="col-xs-11 col-xs-offset-1">{props.body}</div></div> : ''}
     </div>
   )
 }

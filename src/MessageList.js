@@ -13,6 +13,7 @@ class MessageList extends Component{
         "id": 0,
         "labels": [],
         "read": false,
+        "reading" : false,
         "starred": false,
         "subject": "SUBJECT HERE"}],
       selected: new Set()
@@ -48,14 +49,6 @@ class MessageList extends Component{
  */
   // }
 
-  readUnread = async(id) => {
-    try{ 
-      await axios.patch('http://localhost:8082/api/messages',{ messageIds:[id], command:'read'})
-      //now show the clicked upon message??
-    } catch(err) {
-      console.log(err)
-    }
-  }
 
   starChange = async(id) => {
     try{
@@ -108,6 +101,31 @@ class MessageList extends Component{
   //     return ''
   //   }
   // }
+
+  readUnread = async(id) => {
+    try{ 
+      const mess = this.state.messages.find(x=> x.id === id)
+      if(!mess.read){
+        console.log('FALSE')
+        await axios.patch('http://localhost:8082/api/messages',{ messageIds:[id], command:'read'})
+        this.setState({
+          messages: this.state.messages.map(message => message.id === id ? { ...message, reading: !message.reading, read: !message.read} : message)
+        })
+      }
+      else{
+        this.setState({
+          messages: this.state.messages.map(message => message.id === id ? { ...message, reading: !message.reading } : message)
+        })
+      }
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  // For toolbar, we need an onclick method that sets things to all unselected, or all selected.
+  // We also need to pass a property that updates it as individual message are selected
+  //  So, start with the set being altered by the individual message,
+  // then we'll pass that set to Toolbar and the function that similarly edits the slect set
  
   render(){
    return(
@@ -118,9 +136,10 @@ class MessageList extends Component{
           star={message.starred ? 'star fa fa-star-o' :  'star fa fa-star'}
           starChange={() => this.starChange(message.id)}
           labelList={message.labels.map(lab => <span key={lab} className="label label-warning">{lab}</span>)}
-          read={message.read ? 'read ' : 'unread '}
+          read={message.read}
           readUnread={()=> {this.readUnread(message.id)}}
           body={message.body}
+          reading={message.reading}
           subject={message.subject}
           // selected={}
         />
