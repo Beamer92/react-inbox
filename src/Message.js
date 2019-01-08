@@ -10,8 +10,7 @@ function Message(props){
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
-            {/* <input type="checkbox" checked='{***}' onChange='{***}'/> */}
-            <input type="checkbox"></input>
+            <input type="checkbox" checked={props.selected === '' ? false : true} onChange={props.select}/>
           </div>
           <div className="col-xs-2">
             <i className={props.star} onClick={props.starChange}></i>
