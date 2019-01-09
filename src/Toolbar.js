@@ -1,6 +1,24 @@
-import React from 'react'
+import React, {Component} from 'react'
 
-function Toolbar(props){
+class Toolbar extends Component{
+  constructor(props){
+    super(props)
+
+    this.state = {
+      addLabel: '',
+      removeLabel: ''
+    }
+  }
+
+  handleAddLabel = (event) => {
+    this.props.addLabel(this.state.addLabel)
+    // this.setState({
+
+    // })
+  }
+
+
+  render() {
     return(
       <div className="row toolbar">
         <div className="col-md-12">
@@ -9,38 +27,39 @@ function Toolbar(props){
             unread messages
           </p>
 
-          <button className="btn btn-default" onClick={props.selectAll}>
-            <i className={props.selection}></i>
+          <button className="btn btn-default" onClick={this.props.selectAll}>
+            <i className={this.props.selection}></i>
           </button>
 
-          <button className="btn btn-default" disabled={props.dis} onClick={props.markRead}>
+          <button className="btn btn-default" disabled={this.props.dis} onClick={this.props.markRead}>
             Mark As Read
           </button>
 
-          <button className="btn btn-default" disabled={props.dis} onClick={props.markUnread}>
+          <button className="btn btn-default" disabled={this.props.dis} onClick={this.props.markUnread}>
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled={props.dis} onChange={}>
+          <select className="form-control label-select" disabled={this.props.dis}>
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select className="form-control label-select" disabled={props.dis}>
+          <select className="form-control label-select" disabled={this.props.dis}>
             <option>Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default" disabled={props.dis}>
+          <button className="btn btn-default" disabled={this.props.dis}>
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
       </div>
     )
+  } 
 }
 
 export default Toolbar
