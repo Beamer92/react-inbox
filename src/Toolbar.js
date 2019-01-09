@@ -11,7 +11,9 @@ class Toolbar extends Component{
   }
 
   handleAddLabel = (event) => {
-    this.props.addLabel(this.state.addLabel)
+    this.props.captureLabel(event.target.value)
+    // console.log(event.target.value)
+
     // this.setState({
 
     // })
@@ -39,7 +41,7 @@ class Toolbar extends Component{
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled={this.props.dis}>
+          <select className="form-control label-select" disabled={this.props.dis} onChange={this.handleAddLabel}>
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>

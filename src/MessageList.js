@@ -151,9 +151,11 @@ class MessageList extends Component{
   }
 
   addLabel = async(selected = [], lbl) => {
+    console.log('here')
     try {
       const arr = Array.from(selected)
-      await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'addLabel', read: lbl})
+      const result = await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'addLabel', read: lbl})
+      console.log(result)
       this.getMessages()
     } catch(err) {
       console.log(err)
@@ -170,6 +172,9 @@ class MessageList extends Component{
     }
   }
 
+  captureLabel = (val) => {
+    this.addLabel(this.state.selected, val)
+  }
  
   render(){
    return(
