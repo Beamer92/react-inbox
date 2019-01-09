@@ -178,17 +178,21 @@ class MessageList extends Component{
 
   submitCompose = async(event) => {
     event.preventDefault()
-    try{
-      const newMessage ={
-        body: this.state.composeBody,
-        subject: this.state.composeSub
+    if(this.state.composeSub !== '' && this.state.composeBody !== ''){
+      try{
+        const newMessage ={
+          body: this.state.composeBody,
+          subject: this.state.composeSub
+        }
+        await axios.post('http://localhost:8082/api/messages', newMessage)
+        this.getMessages()
+      } catch(err) {
+        console.log(err)
       }
-      await axios.post('http://localhost:8082/api/messages', newMessage)
-      this.getMessages()
-    } catch(err) {
-      console.log(err)
     }
-    // console.log(this.state.composeSub, " body: ", this.state.composeBody)
+    else {
+      //error message of some sort
+    }
   }
 
   changeCompose= (event) => {
