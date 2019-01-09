@@ -13,15 +13,15 @@ function Toolbar(props){
             <i className={props.selection}></i>
           </button>
 
-          <button className="btn btn-default" disabled={props.dis}>
+          <button className="btn btn-default" disabled={props.dis} onClick={props.markRead}>
             Mark As Read
           </button>
 
-          <button className="btn btn-default" disabled={props.dis}>
+          <button className="btn btn-default" disabled={props.dis} onClick={props.markUnread}>
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled={props.dis}>
+          <select className="form-control label-select" disabled={props.dis} onChange={}>
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>

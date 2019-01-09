@@ -47,49 +47,6 @@ class MessageList extends Component{
     }
   }
 
-  // checkChange = () => {
-  //     if(this.props.allSelected === 2){
-  //       this.props.partialSelect()
-  //     }
-
-  //     if(this.state.checked === false) {
-  //       this.setState({
-  //         checked:true,
-  //         selected: true
-  //       })
-  //     }
-  //     else {
-  //       this.setState({
-  //         checked:false,
-  //         selected:false
-  //       })
-  //     }
-  // }
-
-    // checked = () => {
-  //     if(this.props.allSelected === 2) {
-  //       return 'checked'
-  //     }
-  //     else if(this.state.checked === true){
-  //       return 'checked'
-  //     }
-  //     else{
-  //       return ''
-  //     }
-  // }
-
-  // selected = () => {
-  //   if(this.props.allSelected === 2) {
-  //     return 'selected'
-  //   }
-  //   else if(this.state.selected === true){
-  //     return 'selected'
-  //   }
-  //   else{
-  //     return ''
-  //   }
-  // }
-
   readUnread = async(id) => {
     try{ 
       const mess = this.state.messages.find(x=> x.id === id)
@@ -104,46 +61,6 @@ class MessageList extends Component{
     }
   }
 
-
-  //handletoggleselected = (id) => {
-  /* const newSet = new Set(Array.from(this.state.selected))
-    if(newSet.has(id)){
-      newSet.delete(id)
-    }  
-    else ....
-
-    this.setState({
-      selected: newSet
-    })
-  */
-    // }
-
-
-  // For toolbar, we need an onclick method that sets things to all unselected, or all selected.
-  // We also need to pass a property that updates it as individual message are selected
-  //  So, start with the set being altered by the individual message,
-  // then we'll pass that set to Toolbar and the function that similarly edits the slect set
-
-  // selections = () => {
-  //   if(this.state.selected.length === this.state.messages.length){
-  //     return "fa fa-check-square-o"
-  //   }
-  //   else if(this.state.selected.length > 0){
-  //     return "fa fa-minus-square-o"
-  //   }
-  //   else {
-  //     return "fa fa-square-o"
-  //   }
-  // }
-
-  // dis = () => {
-  //   if(this.state.selected.length === 0){
-  //     return 'disabled'
-  //   }
-  //   else{ 
-  //     return ''
-  //   }
-  // }
 
   selectAll = (curSelection) => {
     if(curSelection !== "fa fa-square-o"){
@@ -210,11 +127,59 @@ class MessageList extends Component{
       }
     }
   }
+
+  //first, we need to patch those in the selected set as read, then call getmessages
+
+  markRead = async(selected = []) => {
+    try {
+      const arr = Array.from(selected)
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'read', read: true})
+      this.getMessages()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  markUnread = async(selected = []) => {
+    try {
+      const arr = Array.from(selected)
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'read', label: false})
+      this.getMessages()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  addLabel = async(selected = [], lbl) => {
+    try {
+      const arr = Array.from(selected)
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'addLabel', read: lbl})
+      this.getMessages()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  removeLabel = async(selected = [], lbl) => {
+    try {
+      const arr = Array.from(selected)
+      await axios.patch('http://localhost:8082/api/messages',{ messageIds:arr, command:'removeLabel', read: lbl})
+      this.getMessages()
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
  
   render(){
    return(
       <div className='container'>
-       <Toolbar selection={this.state.tbSel} selectAll={() => this.selectAll(this.state.tbSel)} dis={this.state.tbDisable}/>
+       <Toolbar selection={this.state.tbSel} 
+                selectAll={() => this.selectAll(this.state.tbSel)} 
+                dis={this.state.tbDisable} 
+                markRead={() => this.markRead(this.state.selected)} 
+                markUnread={() => this.markUnread(this.state.selected)}
+                captureLabel = {this.captureLabel}/>
       {this.state.messages.map(message => {
         return <Message key={message.id} 
           star={message.starred ? 'star fa fa-star-o' :  'star fa fa-star'}
