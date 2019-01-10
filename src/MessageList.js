@@ -208,7 +208,9 @@ class MessageList extends Component{
 
   handleComposePlus = () => {
     this.setState({
-      composing: !this.state.composing
+      composing: !this.state.composing,
+      composeBody: '',
+      composeSub: ''
     })
   }
 
