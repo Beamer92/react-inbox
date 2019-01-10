@@ -3,6 +3,7 @@ import Message from './Message'
 import Toolbar from './Toolbar'
 import axios from 'axios'
 import Compose from './ComposeMessage'
+import Toast from './Toast'
 
 class MessageList extends Component{
   constructor(props){
@@ -23,7 +24,8 @@ class MessageList extends Component{
       unread: 0,
       composing: false,
       composeSub: '',
-      composeBody: ''
+      composeBody: '',
+      toast: false
     }
   }
 
@@ -40,7 +42,8 @@ class MessageList extends Component{
         unread: unreadCount,
         composeSub: '',
         composeBody: '',
-        composing: false
+        composing: false,
+        toast: false
       })
     } catch(err) {
       console.log(err)
@@ -191,7 +194,9 @@ class MessageList extends Component{
       }
     }
     else {
-      //error message of some sort
+      this.setState({
+        toast: true
+      })
     }
   }
 
@@ -204,6 +209,12 @@ class MessageList extends Component{
   handleComposePlus = () => {
     this.setState({
       composing: !this.state.composing
+    })
+  }
+
+  resetToast = () => {
+    this.setState({
+      toast: false
     })
   }
  
@@ -220,7 +231,7 @@ class MessageList extends Component{
           unread={this.state.unread}
           deleteSelected={this.deleteSelected}
           handleComposePlus={this.handleComposePlus}/>
-
+    {this.state.toast ? <Toast Close={this.resetToast}/> : null }
       {this.state.composing === false ? '' : <Compose 
                                               composeBody={this.state.composeBody} 
                                               composeSubject={this.state.composeSub} 

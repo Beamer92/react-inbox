@@ -2,8 +2,6 @@ import React from 'react'
 
 
 function Message(props){
-  // <div className="row message-body"><div className="col-xs-11 col-xs-offset-1">{props.body}</div></div>
-
     return(
       <div>
       <div className={"row message " +  (props.read ? 'read ' : 'unread ') + props.selected}>
